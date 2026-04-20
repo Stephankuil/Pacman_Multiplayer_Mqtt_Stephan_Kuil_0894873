@@ -13,10 +13,7 @@ screen = pygame.display.set_mode((width, height))
 
 players = {}
 
-if len(sys.argv) > 1:
-    player_id = sys.argv[1]
-else:
-    player_id = "p1"  # default
+player_id = sys.argv[1] if len(sys.argv) > 1 else "p1"
 
 players[player_id] = {"x": circle_x_coordinate, "y": circle_y_coordinate}
 
@@ -32,13 +29,23 @@ while running:
 
 
     if keys[pygame.K_LEFT]:
-        circle_x_coordinate -= 10
+        players[player_id]["x"] -= 10
     if keys[pygame.K_RIGHT]:
-        circle_x_coordinate += 10
-
+        players[player_id]["x"] += 10
+    if keys[pygame.K_UP]:
+        players[player_id]["y"] -= 10
+    if keys[pygame.K_DOWN]:
+        players[player_id]["y"] += 10
 
     screen.fill((255, 255, 255))
 
-    pygame.draw.circle(screen, (255,0,0), (circle_x_coordinate, circle_y_coordinate), circle_size)
+
+
+    for play_id, pos in players.items():
+        pygame.draw.circle(screen, (255,0,0), (pos["x"], pos["y"]), circle_size)
+
+
+
+
 
     pygame.display.flip()
