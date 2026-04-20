@@ -5,6 +5,7 @@ import json
 import os
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
+import random
 
 load_dotenv()
 
@@ -23,12 +24,17 @@ def on_message(client, userdata, msg):
     pid = data["player_id"]
     x = data["x"]
     y = data["y"]
+    message_type = data.get("type", "move")
 
-    if pid not in players:
-        players[pid] = {"x": x, "y": y}
+    players[pid] = {"x": x, "y": y}
 
-    players[pid]["x"] = x
-    players[pid]["y"] = y
+    if message_type == "join" and pid != player_id:
+        client.publish(TOPIC, json.dumps({
+            "type": "move",
+            "player_id": player_id,
+            "x": players[player_id]["x"],
+            "y": players[player_id]["y"]
+        }))
 
 
 
@@ -36,10 +42,11 @@ pygame.init()
 
 width = 800
 height = 800
-
-circle_x_coordinate = 400
-circle_y_coordinate = 400
 circle_size = 50
+
+circle_x_coordinate = random.randint(circle_size, width - circle_size)
+circle_y_coordinate = random.randint(circle_size, height - circle_size)
+
 screen = pygame.display.set_mode((width, height))
 
 players = {}
@@ -55,12 +62,14 @@ client.connect(BROKER, PORT)
 client.subscribe(TOPIC)
 client.loop_start()
 
-start_message = {
+join_message = {
+    "type": "join",
     "player_id": player_id,
     "x": players[player_id]["x"],
     "y": players[player_id]["y"]
 }
-client.publish(TOPIC, json.dumps(start_message))
+client.publish(TOPIC, json.dumps(join_message))
+
 
 running = True
 
@@ -87,6 +96,7 @@ while running:
 
     if moved:
         message = {
+            "type": "move",
             "player_id": player_id,
             "x": players[player_id]["x"],
             "y": players[player_id]["y"]
