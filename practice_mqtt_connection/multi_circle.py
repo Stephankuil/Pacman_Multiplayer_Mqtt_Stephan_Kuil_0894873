@@ -1,5 +1,28 @@
 import pygame
 import sys
+import ssl
+import json
+
+import paho.mqtt.client as mqtt
+
+
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+BROKER = os.getenv("MQTT_BROKER")
+PORT = int(os.getenv("MQTT_PORT"))
+USERNAME = os.getenv("MQTT_USERNAME")
+PASSWORD = os.getenv("MQTT_PASSWORD")
+
+
+TOPIC = "game/circles"
+
+
+def on_message(client, userdata, msg):
+    data = json.loads(msg.payload.decode())
 
 pygame.init()
 

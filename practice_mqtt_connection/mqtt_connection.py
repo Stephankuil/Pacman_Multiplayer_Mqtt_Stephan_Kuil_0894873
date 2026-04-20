@@ -1,21 +1,32 @@
-import ssl
-import time
+import os
 import paho.mqtt.client as mqtt
 
-def on_connect(client, userdata, flags, reason_code, properties):
-    if reason_code == 0:
-        print("Connectie gelukt")
-    else:
-        print("Connectie mislukt:", reason_code)
+from dotenv import load_dotenv
+import os
 
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-client.username_pw_set("pacman", "Wachtwoord1@")
-client.tls_set(cert_reqs=ssl.CERT_REQUIRED)
+load_dotenv()
 
-client.on_connect = on_connect
+BROKER = os.getenv("MQTT_BROKER")
+PORT = int(os.getenv("MQTT_PORT"))
+USERNAME = os.getenv("MQTT_USERNAME")
+PASSWORD = os.getenv("MQTT_PASSWORD")
+class MQTT_Connection_Check():
+    def __init__(self):
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        self.client.username_pw_set(USERNAME, PASSWORD)
 
-client.connect("82a5f8bf120849f2bdecab4ac8ee5426.s1.eu.hivemq.cloud", 8883)
+    def on_connect(self, client, userdata, flags, reason_code, properties):
+        if reason_code == 0:
+            print("✅ CONNECTIE GELUKT")
+        else:
+            print(f"❌ CONNECTIE MISLUKT: {reason_code}")
 
-client.loop_start()
-time.sleep(3)
-client.loop_stop()
+    def check_connection(self):
+        self.client.on_connect = self.on_connect
+        self.client.connect(BROKER, PORT)
+        self.client.loop_start()
+
+
+if __name__ == "__main__":
+    mqtt_checker = MQTT_Connection_Check()
+    mqtt_checker.check_connection()
