@@ -15,8 +15,22 @@ PASSWORD = os.getenv("MQTT_PASSWORD")
 
 TOPIC = "game/circles"
 
+
+
 def on_message(client, userdata, msg):
-    pass
+    data = json.loads(msg.payload.decode())
+
+    pid = data["player_id"]
+    x = data["x"]
+    y = data["y"]
+
+    if pid not in players:
+        players[pid] = {"x": x, "y": y}
+
+    players[pid]["x"] = x
+    players[pid]["y"] = y
+
+
 
 pygame.init()
 
@@ -41,9 +55,17 @@ client.connect(BROKER, PORT)
 client.subscribe(TOPIC)
 client.loop_start()
 
+start_message = {
+    "player_id": player_id,
+    "x": players[player_id]["x"],
+    "y": players[player_id]["y"]
+}
+client.publish(TOPIC, json.dumps(start_message))
+
 running = True
 
 while running:
+    moved = False
     keys = pygame.key.get_pressed()
 
     for event in pygame.event.get():
@@ -52,12 +74,25 @@ while running:
 
     if keys[pygame.K_LEFT]:
         players[player_id]["x"] -= 10
+        moved = True
     if keys[pygame.K_RIGHT]:
         players[player_id]["x"] += 10
+        moved = True
     if keys[pygame.K_UP]:
         players[player_id]["y"] -= 10
+        moved = True
     if keys[pygame.K_DOWN]:
         players[player_id]["y"] += 10
+        moved = True
+
+    if moved:
+        message = {
+            "player_id": player_id,
+            "x": players[player_id]["x"],
+            "y": players[player_id]["y"]
+        }
+        print(message)
+        client.publish(TOPIC, json.dumps(message))
 
     screen.fill((255, 255, 255))
 
