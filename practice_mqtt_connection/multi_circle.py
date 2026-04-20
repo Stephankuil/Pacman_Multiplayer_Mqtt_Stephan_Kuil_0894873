@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 pygame.init()
 
@@ -9,6 +10,15 @@ circle_x_coordinate = 400
 circle_y_coordinate = 400
 circle_size = 50
 screen = pygame.display.set_mode((width, height))
+
+players = {}
+
+if len(sys.argv) > 1:
+    player_id = sys.argv[1]
+else:
+    player_id = "p1"  # default
+
+players[player_id] = {"x": circle_x_coordinate, "y": circle_y_coordinate}
 
 
 running = True
