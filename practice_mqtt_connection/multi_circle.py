@@ -16,6 +16,27 @@ PASSWORD = os.getenv("MQTT_PASSWORD")
 
 TOPIC = "game/circles"
 
+PLAYER_COLORS = [
+    (255, 0, 0),      # rood
+    (0, 0, 255),      # blauw
+    (0, 255, 0),      # groen
+    (255, 255, 0),    # geel
+    (255, 165, 0),    # oranje
+    (128, 0, 128),    # paars
+    (0, 255, 255),    # lichtblauw
+    (255, 192, 203),  # roze
+    (165, 42, 42),    # bruin
+    (0, 0, 0)         # zwart
+]
+
+def get_player_color(player_id):
+    totaal = 0
+
+    for letter in player_id:
+        totaal += ord(letter)
+
+    kleur_index = totaal % len(PLAYER_COLORS)
+    return PLAYER_COLORS[kleur_index]
 
 
 def on_message(client, userdata, msg):
@@ -26,7 +47,15 @@ def on_message(client, userdata, msg):
     y = data["y"]
     message_type = data.get("type", "move")
 
-    players[pid] = {"x": x, "y": y}
+    if pid not in players:
+        players[pid] = {
+            "x": x,
+            "y": y,
+            "color": get_player_color(pid)
+        }
+    else:
+        players[pid]["x"] = x
+        players[pid]["y"] = y
 
     if message_type == "join" and pid != player_id:
         client.publish(TOPIC, json.dumps({
@@ -42,7 +71,12 @@ pygame.init()
 
 width = 800
 height = 800
-circle_size = 50
+circle_size = 20
+
+font = pygame.font.SysFont(None, 30)
+
+pacman_img = pygame.image.load("../images/pacman2.png")
+pacman_img = pygame.transform.scale(pacman_img, (circle_size*2, circle_size*2))
 
 circle_x_coordinate = random.randint(circle_size, width - circle_size)
 circle_y_coordinate = random.randint(circle_size, height - circle_size)
@@ -52,7 +86,11 @@ screen = pygame.display.set_mode((width, height))
 players = {}
 
 player_id = sys.argv[1] if len(sys.argv) > 1 else "p1"
-players[player_id] = {"x": circle_x_coordinate, "y": circle_y_coordinate}
+players[player_id] = {
+    "x": circle_x_coordinate,
+    "y": circle_y_coordinate,
+    "color": get_player_color(player_id)
+}
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.username_pw_set(USERNAME, PASSWORD)
@@ -82,16 +120,16 @@ while running:
             running = False
 
     if keys[pygame.K_LEFT]:
-        players[player_id]["x"] -= 10
+        players[player_id]["x"] -= 5
         moved = True
     if keys[pygame.K_RIGHT]:
-        players[player_id]["x"] += 10
+        players[player_id]["x"] += 5
         moved = True
     if keys[pygame.K_UP]:
-        players[player_id]["y"] -= 10
+        players[player_id]["y"] -= 5
         moved = True
     if keys[pygame.K_DOWN]:
-        players[player_id]["y"] += 10
+        players[player_id]["y"] += 5
         moved = True
 
     if moved:
@@ -107,7 +145,11 @@ while running:
     screen.fill((255, 255, 255))
 
     for play_id, pos in players.items():
-        pygame.draw.circle(screen, (255, 0, 0), (pos["x"], pos["y"]), circle_size)
+        screen.blit(pacman_img, (pos["x"] - circle_size, pos["y"] - circle_size))
+
+        color = pos["color"]
+        name_text = font.render(play_id, True, color)
+        screen.blit(name_text, (pos["x"] - 20, pos["y"] - 40))
 
     pygame.display.flip()
 
