@@ -25,4 +25,4 @@ sequenceDiagram
     B-->>P1: update ontvangen
     B-->>P2: update ontvangen
     B-->>P3: update ontvangen
-    ```
+```
