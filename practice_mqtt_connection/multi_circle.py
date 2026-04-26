@@ -157,4 +157,3 @@ client.loop_stop()
 client.disconnect()
 pygame.quit()
 
-#hallo

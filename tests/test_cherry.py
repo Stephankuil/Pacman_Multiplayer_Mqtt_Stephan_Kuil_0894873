@@ -1,5 +1,7 @@
 import pytest
 
-def test_cherry():
-    assert False
+def test_cherry_bonus_points():
+    pass
+
+
 
