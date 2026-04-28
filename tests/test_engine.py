@@ -9,6 +9,9 @@ def test_engine_level_completion():
 def test_engine_game_over():
     pass
 
+def test_engine_game_over_unhappy_path():
+    pass
+
 def test_engine_number_of_players():
     pass
 
@@ -18,15 +21,30 @@ def test_game_status():
 def test_engine_pauze():
     pass
 
+def test_engine_unpauze():
+    pass
+
+
 def test_engine_resume():
+    pass
+
+def test_engine_resume_unhappy_path():
     pass
 
 def test_engine_restart():
     pass
 
+def test_engine_restart_unhappy_path():
+    pass
 def test_engine_draw_map():
     pass
 
+def test_engine_draw_map_unhappy_path():
+    pass
+
 def test_engine_stop():
+    pass
+
+def test_engine_stop_unhappy_path():
     pass
 
