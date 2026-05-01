@@ -8,7 +8,7 @@ def test_cheese_how_many_left():
     chees = Cheese(color="yellow", quantity=5)
     assert chees.how_many_left() == 5
 
-def test_cheese_how_many_left_unhappy_path():
+def test_cheese_how_many_left_below_zero_error():
     with pytest.raises(ValueError):
         Cheese(color="yellow", quantity=-1)
 
