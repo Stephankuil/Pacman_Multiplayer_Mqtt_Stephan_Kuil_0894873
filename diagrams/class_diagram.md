@@ -25,6 +25,7 @@ namespace Gamelogic {
         +int level
         +int game_status
         +int number_of_players
+        if_win()
         game_over()
         game_run()
         game_resume()

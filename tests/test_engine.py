@@ -1,10 +1,18 @@
 import pytest
-
+from game.engine import Engine
 def test_engine_running():
-    assert False
+    engine = Engine()
+    assert engine.running == False
+
 
 def test_engine_level_completion():
-    pass
+    engine = Engine()
+
+    engine.cheese.quantity = 0
+
+    engine.check_level_completion()
+
+    assert engine.level == 2
 
 def test_engine_game_over():
     pass
