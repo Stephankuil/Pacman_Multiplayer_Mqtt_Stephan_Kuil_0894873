@@ -1,12 +1,15 @@
 import pytest
-
+from game.cheese import Cheese
 def test_cheese_color():
-    pass
+    chees = Cheese(color="yellow")
+    assert chees.color == "yellow"
 
 def test_cheese_how_many_left():
-    pass
+    chees = Cheese(color="yellow", quantity=5)
+    assert chees.how_many_left() == 5
 
 def test_cheese_how_many_left_unhappy_path():
-    pass
+    with pytest.raises(ValueError):
+        Cheese(color="yellow", quantity=-1)
 
 
