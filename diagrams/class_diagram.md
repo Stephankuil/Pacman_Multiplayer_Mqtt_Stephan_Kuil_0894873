@@ -66,10 +66,11 @@ namespace Characters {
 namespace Items {
     class Cherry {
         +int bonus_points
+        respawn()
     }
 
     class Cheese {
-        +rgb_color color
+        -rgb_color color
         how_many_left()
     }
 
