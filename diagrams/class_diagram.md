@@ -47,6 +47,7 @@ namespace Gamelogic {
 namespace Characters {
     class Pacman {
         +int lives
+        +blob image
         eat_cheese()
         eat_powerup()
         add_score()
@@ -55,6 +56,7 @@ namespace Characters {
     }
 
     class Ghosts {
+        blob image
         +rgb_color color
         +int start_position
         +boolean edible
@@ -68,16 +70,19 @@ namespace Characters {
 
 namespace Items {
     class Cherry {
+        +blob image
         +int bonus_points
         respawn()
     }
 
     class Cheese {
+        +blob image
         -rgb_color color
         how_many_left()
     }
 
     class Powerup {
+        +blob image
         +int spawn_points
         +int amount
     }
