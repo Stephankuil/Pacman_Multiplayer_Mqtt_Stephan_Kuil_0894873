@@ -53,6 +53,7 @@ namespace Characters {
         add_score()
         eat_cherry()
         lose_life()
+        eat_ghost()
     }
 
     class Ghosts {
@@ -64,7 +65,7 @@ namespace Characters {
         make_normal()
         wall_check()
         hit_pacman()
-        eat_pacman()
+        eat_by_pacman()
     }
 }
 
