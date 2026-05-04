@@ -74,6 +74,10 @@ if __name__ == "__main__":
             powerup.respawn(game_map)
             last_powerup_spawn = current_time
 
+        if pacman.power_mode and current_time > pacman.power_mode_end_time:
+            pacman.power_mode = False
+            ghost.make_normal()
+            print("⚡ Power mode OFF")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -89,27 +93,28 @@ if __name__ == "__main__":
                 elif event.key == pygame.K_DOWN:
                     pacman.move("DOWN", game_map)
 
+                pacman.teleport_if_needed(game_map)
+                pacman.eat_cheese(cheese)
+                pacman.eat_cherry(cherry)
 
-            pacman.eat_cheese(cheese)
-            pacman.eat_cherry(cherry)
+                if pacman.eat_powerup(powerup):
+                    ghost.make_edible()
 
-            if pacman.eat_powerup(powerup):
-                ghost.make_edible()
+        ghost.move_random(game_map)
+        ghost.teleport_if_needed(game_map)
 
-            if ghost.edible:
-                ghost.eaten_by_pacman(pacman)
-            else:
-                ghost.hit_pacman(pacman)
-
+        if ghost.edible:
+            ghost.eaten_by_pacman(pacman)
+        else:
+            ghost.hit_pacman(pacman)
 
         engine.screen.fill((0, 0, 0))
-
         engine.draw_map(game_map)
         cheese.draw(engine.screen)
-        pacman.draw(engine.screen)
         cherry.draw(engine.screen)
         powerup.draw(engine.screen)
         ghost.draw(engine.screen)
+        pacman.draw(engine.screen)
 
         pygame.display.flip()
         engine.clock.tick(10)

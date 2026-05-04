@@ -14,7 +14,7 @@ class LevelMap:
            ['1', ' ', '1', '1', '1', '1', ' ', '1', '1', '1', '1', '1', ' ', '1', '1', '1', '1', ' ', '1'],
            ['1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1'],
            ['1', '1', ' ', '1', '1', '1', ' ', '1', '1', '-', '1', '1', ' ', '1', '1', '1', ' ', '1', '1'],
-           [' ', ' ', ' ', ' ', ' ', '1', ' ', '1', 's', 'p', 'o', '1', ' ', '1', ' ', ' ', ' ', ' ', ' '],
+           ['q', ' ', ' ', ' ', ' ', '1', ' ', ' ', 's', 'p', 'o', ' ', ' ', '1', ' ', ' ', ' ', ' ', 'q'],
            ['1', '1', ' ', '1', ' ', '1', ' ', '1', '1', '1', '1', '1', ' ', '1', ' ', '1', ' ', '1', '1'],
            ['1', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', ' ', ' ', '1'],
            ['1', ' ', '1', '1', '1', '1', ' ', '1', '1', '1', '1', '1', ' ', '1', '1', '1', '1', ' ', '1'],
@@ -42,3 +42,24 @@ class LevelMap:
                     cheese_positions.append((x, y))
 
         return cheese_positions
+
+    def get_teleport_positions(self):
+        positions = []
+
+        for y, row in enumerate(self.map):
+            for x, tile in enumerate(row):
+                if tile == 'q':
+                    positions.append((x, y))
+
+        return positions
+
+    def get_other_teleport(self, x, y):
+        teleports = self.get_teleport_positions()
+
+        for tx, ty in teleports:
+            if (tx, ty) != (x, y):
+                return tx, ty
+
+        return x, y  # fallback
+
+

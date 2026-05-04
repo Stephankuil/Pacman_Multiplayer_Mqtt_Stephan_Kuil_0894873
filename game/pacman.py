@@ -10,6 +10,8 @@ class Pacman(Character):
         self.lives = 3
         self.tile_size = tile_size
         self.image_size = 30
+        self.power_mode = False
+        self.power_mode_end_time = 0
 
         base_path = os.path.dirname(os.path.dirname(__file__))
         full_path = os.path.join(base_path, image_path)
@@ -52,7 +54,10 @@ class Pacman(Character):
             powerup.consumed = True
             self.add_score(powerup.spawn_points)
 
-            print("Powerup eaten! Score:", self.score)
+            self.power_mode = True
+            self.power_mode_end_time = pygame.time.get_ticks() + 15000  # 15 sec
+
+            print("⚡ Power mode ON")
             return True
 
         return False

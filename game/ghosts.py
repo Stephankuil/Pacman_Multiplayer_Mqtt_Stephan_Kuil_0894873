@@ -1,7 +1,7 @@
 import pygame
 import os
 from character import Character
-
+import random
 
 class Ghost(Character):
     def __init__(self, x, y, image_path, blue_image_path, tile_size, color=(255, 0, 0)):
@@ -14,6 +14,10 @@ class Ghost(Character):
         self.color = color
         self.starting_position = (x, y)
         self.edible = False
+        self.last_direction = None
+        self.move_delay = 400  # milliseconden (pas aan)
+        self.last_move_time = 0
+
 
         base_path = os.path.dirname(os.path.dirname(__file__))
 
@@ -67,3 +71,40 @@ class Ghost(Character):
             self.make_normal()
 
             print("Ghost eaten! Score:", pacman.score)
+
+    def move_random(self, level_map):
+        import pygame
+        import random
+
+        current_time = pygame.time.get_ticks()
+
+        # 🔥 wacht tot delay voorbij is
+        if current_time - self.last_move_time < self.move_delay:
+            return
+
+        self.last_move_time = current_time
+
+        directions = ["LEFT", "RIGHT", "UP", "DOWN"]
+
+        # geen terugstap
+        opposite = {
+            "LEFT": "RIGHT",
+            "RIGHT": "LEFT",
+            "UP": "DOWN",
+            "DOWN": "UP"
+        }
+
+        if self.last_direction:
+            directions = [d for d in directions if d != opposite[self.last_direction]]
+
+        random.shuffle(directions)
+
+        for direction in directions:
+            old_x = self.x_coordinate
+            old_y = self.y_coordinate
+
+            self.move(direction, level_map)
+
+            if (self.x_coordinate, self.y_coordinate) != (old_x, old_y):
+                self.last_direction = direction
+                break

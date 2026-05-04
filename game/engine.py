@@ -8,8 +8,8 @@ class Engine:
         self.game_status = game_status
         self.number_of_players = number_of_players
 
-        self.screen_width = 760
-        self.screen_height = 840
+        self.screen_width = 800
+        self.screen_height = 880
         self.tile_size = 40
 
         self.screen = None
