@@ -12,6 +12,7 @@ class Character {
     +string name
     +int score
     move()
+    wall_check()
 }
 
 class Item {
@@ -63,7 +64,6 @@ namespace Characters {
         +boolean edible
         make_edible()
         make_normal()
-        wall_check()
         hit_pacman()
         eat_by_pacman()
     }

@@ -1,6 +1,6 @@
 import pytest
 from game.engine import Engine
-from game.map import Map
+from game.levelmap import Map
 
 def test_engine_running():
     engine = Engine()

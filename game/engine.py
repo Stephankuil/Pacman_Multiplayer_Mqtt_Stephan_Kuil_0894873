@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 
 class Engine:
@@ -16,7 +15,7 @@ class Engine:
         self.screen = None
         self.clock = None
 
-    def start_game(self, game_map, cheese):
+    def start_game(self):
         pygame.init()
 
         self.screen = pygame.display.set_mode(
@@ -28,28 +27,9 @@ class Engine:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self.game_running(game_map, cheese)
-
-    def game_running(self, game_map, cheese):
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.game_stop()
-
-            self.screen.fill((0, 0, 0))
-
-            self.draw_map(game_map)
-            cheese.draw(self.screen)
-
-            pygame.display.flip()
-            self.clock.tick(60)
-
-        pygame.quit()
-
     def draw_map(self, map_obj):
         for y, row in enumerate(map_obj.map):
             for x, tile in enumerate(row):
-
                 rect = pygame.Rect(
                     x * self.tile_size,
                     y * self.tile_size,
@@ -61,6 +41,9 @@ class Engine:
                     pygame.draw.rect(self.screen, (0, 0, 255), rect)
                 else:
                     pygame.draw.rect(self.screen, (0, 0, 0), rect)
+
+    def game_stop(self):
+        self.running = False
     def if_win(self):
         pass
 
