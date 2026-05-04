@@ -5,6 +5,7 @@ from levelmap import LevelMap
 from cheese import Cheese
 from pacman import Pacman
 from cherry import Cherry
+from powerup import Powerup
 
 if __name__ == "__main__":
     game_map = LevelMap(LevelMap.MAP1, 19, 21, 1)
@@ -18,6 +19,12 @@ if __name__ == "__main__":
         image_path="images/cherry3.png",
         tile_size=40,
         bonus_points=100
+    )
+    powerup = Powerup(
+        image_path="images/power_up1.png",
+        tile_size=40,
+        spawn_points=50,
+        amount=1
     )
 
     pacman = Pacman(
@@ -41,6 +48,10 @@ if __name__ == "__main__":
     cherry_spawn_interval = 20000
     cherry.load_image()
 
+    powerup.load_image()
+    last_powerup_spawn = pygame.time.get_ticks()
+    powerup_spawn_interval = 30000
+
     while engine.running:
 
 
@@ -49,6 +60,10 @@ if __name__ == "__main__":
         if current_time - last_cherry_spawn >= cherry_spawn_interval:
             cherry.respawn(game_map)
             last_cherry_spawn = current_time
+
+        if current_time - last_powerup_spawn >= powerup_spawn_interval:
+            powerup.respawn(game_map)
+            last_powerup_spawn = current_time
 
 
         for event in pygame.event.get():
@@ -67,6 +82,7 @@ if __name__ == "__main__":
 
             pacman.eat_cheese(cheese)
             pacman.eat_cherry(cherry)
+            pacman.eat_powerup(powerup)
 
         engine.screen.fill((0, 0, 0))
 
@@ -74,6 +90,7 @@ if __name__ == "__main__":
         cheese.draw(engine.screen)
         pacman.draw(engine.screen)
         cherry.draw(engine.screen)
+        powerup.draw(engine.screen)
 
         pygame.display.flip()
         engine.clock.tick(10)

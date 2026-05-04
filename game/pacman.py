@@ -44,6 +44,15 @@ class Pacman(Character):
             self.add_score(cherry.bonus_points)
             print("Cherry eaten! Score: ", self.score)
 
+    def eat_powerup(self, powerup):
+        if powerup.consumed:
+            return
+
+        if self.x_coordinate == powerup.x_coordinate and self.y_coordinate == powerup.y_coordinate:
+            powerup.consumed = True
+            self.add_score(powerup.spawn_points)
+            print("Powerup eaten! Score:", self.score)
+
 
     def add_score(self, points):
         self.score += points
