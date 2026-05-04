@@ -41,13 +41,12 @@ if __name__ == "__main__":
         game_status="menu",
         number_of_players=1
     )
-    ghost = Ghost(
-        x=9,
-        y=9,
-        image_path="images/ghost1.png",
-        blue_image_path="images/ghost_blue.png",
-        tile_size=40
-    )
+    ghosts = [
+        Ghost(9, 9, "images/ghost1.png", "images/ghost_blue.png", 40),
+        Ghost(8, 9, "images/ghost1.png", "images/ghost_blue.png", 40),
+        Ghost(10, 9, "images/ghost1.png", "images/ghost_blue.png", 40),
+        Ghost(9, 8, "images/ghost1.png", "images/ghost_blue.png", 40),
+    ]
 
 
     engine.start_game()
@@ -62,8 +61,6 @@ if __name__ == "__main__":
     powerup_spawn_interval = 30000
 
     while engine.running:
-
-
         current_time = pygame.time.get_ticks()
 
         if current_time - last_cherry_spawn >= cherry_spawn_interval:
@@ -76,7 +73,10 @@ if __name__ == "__main__":
 
         if pacman.power_mode and current_time > pacman.power_mode_end_time:
             pacman.power_mode = False
-            ghost.make_normal()
+
+            for ghost in ghosts:
+                ghost.make_normal()
+
             print("⚡ Power mode OFF")
 
         for event in pygame.event.get():
@@ -98,22 +98,27 @@ if __name__ == "__main__":
                 pacman.eat_cherry(cherry)
 
                 if pacman.eat_powerup(powerup):
-                    ghost.make_edible()
+                    for ghost in ghosts:
+                        ghost.make_edible()
 
-        ghost.move_random(game_map)
-        ghost.teleport_if_needed(game_map)
+        for ghost in ghosts:
+            ghost.move_random(game_map)
+            ghost.teleport_if_needed(game_map)
 
-        if ghost.edible:
-            ghost.eaten_by_pacman(pacman)
-        else:
-            ghost.hit_pacman(pacman)
+            if ghost.edible:
+                ghost.eaten_by_pacman(pacman)
+            else:
+                ghost.hit_pacman(pacman)
 
         engine.screen.fill((0, 0, 0))
         engine.draw_map(game_map)
         cheese.draw(engine.screen)
         cherry.draw(engine.screen)
         powerup.draw(engine.screen)
-        ghost.draw(engine.screen)
+
+        for ghost in ghosts:
+            ghost.draw(engine.screen)
+
         pacman.draw(engine.screen)
 
         pygame.display.flip()
