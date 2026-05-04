@@ -6,6 +6,7 @@ from cheese import Cheese
 from pacman import Pacman
 from cherry import Cherry
 from powerup import Powerup
+from ghosts import Ghost
 
 if __name__ == "__main__":
     game_map = LevelMap(LevelMap.MAP1, 19, 21, 1)
@@ -40,6 +41,14 @@ if __name__ == "__main__":
         game_status="menu",
         number_of_players=1
     )
+    ghost = Ghost(
+        x=9,
+        y=9,
+        image_path="images/ghost1.png",
+        blue_image_path="images/ghost_blue.png",
+        tile_size=40
+    )
+
 
     engine.start_game()
 
@@ -80,9 +89,18 @@ if __name__ == "__main__":
                 elif event.key == pygame.K_DOWN:
                     pacman.move("DOWN", game_map)
 
+
             pacman.eat_cheese(cheese)
             pacman.eat_cherry(cherry)
-            pacman.eat_powerup(powerup)
+
+            if pacman.eat_powerup(powerup):
+                ghost.make_edible()
+
+            if ghost.edible:
+                ghost.eaten_by_pacman(pacman)
+            else:
+                ghost.hit_pacman(pacman)
+
 
         engine.screen.fill((0, 0, 0))
 
@@ -91,6 +109,7 @@ if __name__ == "__main__":
         pacman.draw(engine.screen)
         cherry.draw(engine.screen)
         powerup.draw(engine.screen)
+        ghost.draw(engine.screen)
 
         pygame.display.flip()
         engine.clock.tick(10)
