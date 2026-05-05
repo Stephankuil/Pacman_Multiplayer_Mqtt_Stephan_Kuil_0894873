@@ -20,6 +20,8 @@ class MQTTManager:
         self.pacman = pacman
         self.players = players
         self.world_state = None
+        self.item_eaten_message = None
+        self.cheese_eaten_message = None
 
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.client.username_pw_set(USERNAME, PASSWORD)
@@ -38,6 +40,12 @@ class MQTTManager:
         data = json.loads(msg.payload.decode())
         if data["type"] == "world_state":
             self.world_state = data
+            return
+        if data["type"] == "item_eaten":
+            self.item_eaten_message = data
+            return
+        if data["type"] == "cheese_eaten":
+            self.cheese_eaten_message = data
             return
 
         pid = data["player_id"]
@@ -106,6 +114,27 @@ class MQTTManager:
         }
 
         self.client.publish(TOPIC, json.dumps(message))
+
+    def publish_item_eaten(self, item_type):
+        message = {
+            "type": "item_eaten",
+            "player_id": self.player_id,
+            "item_type": item_type
+        }
+
+        self.client.publish(TOPIC, json.dumps(message))
+
+    def publish_cheese_eaten(self, x, y):
+        message = {
+            "type": "cheese_eaten",
+            "player_id": self.player_id,
+            "x": x,
+            "y": y
+        }
+
+        self.client.publish(TOPIC, json.dumps(message))
+
+
     def disconnect(self):
         self.client.loop_stop()
         self.client.disconnect()
