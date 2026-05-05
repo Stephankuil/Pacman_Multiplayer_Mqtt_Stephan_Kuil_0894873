@@ -15,13 +15,15 @@ TOPIC = "pacman/game"
 
 
 class MQTTManager:
-    def __init__(self, player_id, pacman, players):
+    def __init__(self, player_id, pacman, players, scoreboard, is_host):
         self.player_id = player_id
         self.pacman = pacman
         self.players = players
         self.world_state = None
         self.item_eaten_message = None
         self.cheese_eaten_message = None
+        self.scoreboard = scoreboard
+        self.is_host = is_host
 
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.client.username_pw_set(USERNAME, PASSWORD)
@@ -38,6 +40,9 @@ class MQTTManager:
 
     def on_message(self, client, userdata, msg):
         data = json.loads(msg.payload.decode())
+        if data["type"] == "scoreboard_update":
+            self.scoreboard.from_dict(data["scoreboard"])
+            return
         if data["type"] == "world_state":
             self.world_state = data
             return
@@ -61,8 +66,12 @@ class MQTTManager:
             "lives": data.get("lives", 3)
         }
 
-        # als iemand joint, stuur mijn positie terug
         if data.get("type") == "join":
+            if self.is_host:
+                self.scoreboard.add_player(pid, pid)
+                self.publish_scoreboard()
+
+
             self.publish_move()
 
     def publish_join(self):
@@ -130,6 +139,14 @@ class MQTTManager:
             "player_id": self.player_id,
             "x": x,
             "y": y
+        }
+
+        self.client.publish(TOPIC, json.dumps(message))
+
+    def publish_scoreboard(self):
+        message = {
+            "type": "scoreboard_update",
+            "scoreboard": self.scoreboard.to_dict()
         }
 
         self.client.publish(TOPIC, json.dumps(message))
