@@ -11,7 +11,7 @@ PORT = int(os.getenv("MQTT_PORT"))
 USERNAME = os.getenv("MQTT_USERNAME")
 PASSWORD = os.getenv("MQTT_PASSWORD")
 
-TOPIC = "pacman/game"
+TOPIC = "pacman/inspiration"
 
 
 class MQTTManager:

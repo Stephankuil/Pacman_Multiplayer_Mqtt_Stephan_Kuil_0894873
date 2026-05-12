@@ -1,6 +1,6 @@
 import pytest
-from game.pacman import Pacman
-from game.ghosts import Ghost
+from inspiration.pacman import Pacman
+from inspiration.ghosts import Ghost
 def test_pacman():
     pass
 

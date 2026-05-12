@@ -1,6 +1,6 @@
 import pytest
-from game.engine import Engine
-from game.levelmap import Map
+from inspiration.engine import Engine
+from inspiration.levelmap import Map
 
 def test_engine_running():
     engine = Engine()
@@ -74,7 +74,7 @@ def test_engine_resume_cant_resume_if_game_over_bug():
 def test_engine_restart():
     engine = Engine()
 
-    # simulatie van game over situatie
+    # simulatie van inspiration over situatie
     engine.running = False
     engine.level = 3
     engine.pacman.lives = 0

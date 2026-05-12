@@ -1,5 +1,5 @@
 import pytest
-from game.item import Item
+from inspiration.item import Item
 def test_item_initialization():
     item = Item(name="Power Pellet", points=100)
     assert item.name == "Power Pellet"

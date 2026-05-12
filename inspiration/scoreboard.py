@@ -70,7 +70,7 @@ if __name__ == "__main__":
     USERNAME = os.getenv("MQTT_USERNAME")
     PASSWORD = os.getenv("MQTT_PASSWORD")
 
-    TOPIC = "pacman/game"
+    TOPIC = "pacman/inspiration"
 
     pygame.init()
     screen = pygame.display.set_mode((400, 600))

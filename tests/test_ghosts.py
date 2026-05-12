@@ -1,6 +1,6 @@
 import pytest
-from game.ghosts import Ghost
-from game.pacman import Pacman
+from inspiration.ghosts import Ghost
+from inspiration.pacman import Pacman
 
 def test_ghosts():
     ghost = Ghost(color="red", starting_position=(0, 0))
@@ -20,12 +20,15 @@ def test_make_edible():
     ghost.make_edible(duration=10)
     assert ghost.edible
 
+
 def test_edible_timer():
     ghost = Ghost(color="red", starting_position=(0, 0))
     ghost.make_edible(duration=10)
     assert ghost.edible
     # Simulate time passing
     ghost.update_edible_timer(10)
+    #make a timer -1 to simulate the timer running out while ghost edible is true.
+
     assert not ghost.edible
 
 

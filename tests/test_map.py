@@ -1,5 +1,5 @@
 import pytest
-from game.levelmap import Map
+from inspiration.levelmap import Map
 def test_map():
     map = Map(widdth=10, height=10, number_of_map=1)
     assert map.width == 10

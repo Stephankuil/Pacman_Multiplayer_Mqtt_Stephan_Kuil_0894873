@@ -1,5 +1,5 @@
 import pytest
-from game.cheese import Cheese
+from inspiration.cheese import Cheese
 def test_cheese_color():
     chees = Cheese(color="yellow")
     assert chees.color == "yellow"

@@ -14,7 +14,7 @@ PORT = int(os.getenv("MQTT_PORT"))
 USERNAME = os.getenv("MQTT_USERNAME")
 PASSWORD = os.getenv("MQTT_PASSWORD")
 
-TOPIC = "game/circles"
+TOPIC = "inspiration/circles"
 
 PLAYER_COLORS = [
     (255, 0, 0),      # rood
