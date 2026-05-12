@@ -1,9 +1,10 @@
 from game.gameobject import GameObject
 class Character(GameObject):
-    def __init__(self, name, score, x_coordinate, y_coordinate):
-        super().__init__(x_coordinate, y_coordinate)
+    def __init__(self, name, score, x_coordinate, y_coordinate, image=None):
+        super().__init__(x_coordinate, y_coordinate, image)
         self.name = name
         self.score = score
+        self.image = image
 
     def move(self, direction, level_map):
         if direction == "LEFT":
