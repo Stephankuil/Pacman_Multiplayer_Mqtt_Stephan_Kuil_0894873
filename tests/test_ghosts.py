@@ -1,28 +1,38 @@
 import pytest
-from inspiration.ghosts import Ghost
-from inspiration.pacman import Pacman
+from game.ghosts import Ghost
+
 
 def test_ghosts():
-    ghost = Ghost(color="red", starting_position=(0, 0))
-    assert ghost
+    ghost = Ghost(
+        color="red",
+        x_coordinate=0,
+        y_coordinate=0,
+        start_position=(0, 0)
+    )
+
+    assert ghost.color == "red"
+    assert ghost.x_coordinate == 0
+    assert ghost.y_coordinate == 0
+    assert ghost.start_position == (0, 0)
+    assert ghost.edible is False
 
 def test_color():
-    ghost = Ghost(color="red", starting_position=(0, 0))
+    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
     assert ghost.color == "red"
 
 
 def test_edible():
-    ghost = Ghost(color="red", starting_position=(0, 0))
+    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
     assert not ghost.edible
 
 def test_make_edible():
-    ghost = Ghost(color="red", starting_position=(0, 0))
+    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
     ghost.make_edible(duration=10)
     assert ghost.edible
 
 
 def test_edible_timer():
-    ghost = Ghost(color="red", starting_position=(0, 0))
+    ghost = Ghost(color="red", start_position=(0, 0))
     ghost.make_edible(duration=10)
     assert ghost.edible
     # Simulate time passing
