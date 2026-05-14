@@ -1,5 +1,5 @@
 from game.character import Character
-
+from inspiration.levelmap import LevelMap
 
 class Ghost(Character):
 
@@ -15,13 +15,24 @@ class Ghost(Character):
         self.color = color
         self.start_position = start_position
         self.edible = False
+        self.edible_timer = 0
 
     def make_edible(self, duration=None):
         self.edible = True
-        self.duration = duration
+        self.edible_timer = duration
+
+    def update_edible_timer(self, time_passed):
+        if self.edible and self.edible_timer is not None:
+
+            self.edible_timer -= time_passed
+
+            # Timer afgelopen
+            if self.edible_timer <= 0:
+                self.make_normal()
 
     def make_normal(self):
         self.edible = False
+        self.edible_timer = 0
 
     def hit_pacman(self, pacman):
         if self.edible:
@@ -44,3 +55,20 @@ class Ghost(Character):
             pacman.add_score(200)
             self.x_coordinate, self.y_coordinate = self.start_position
             self.make_normal()
+
+    def wall_check(self, new_position, level_map):
+        x, y = new_position
+
+        # Buiten map links/boven
+        if x < 0 or y < 0:
+            return False
+
+        # Buiten map rechts/onder
+        if x >= level_map.width or y >= level_map.height:
+            return False
+
+        # Muur geraakt
+        if level_map.is_wall(x, y):
+            return False
+
+        return True
