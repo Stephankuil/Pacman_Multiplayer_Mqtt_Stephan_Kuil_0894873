@@ -1,13 +1,31 @@
 import pytest
-from inspiration.pacman import Pacman
-from inspiration.ghosts import Ghost
+from game.pacman import Pacman
+from game.ghosts import Ghost
+from game.cheese import Cheese
+from game.cherry import Cherry
+from game.powerup import PowerUp
 def test_pacman():
-    pass
+    pacman = Pacman()
+    assert pacman.name == "Pacman"
+    assert pacman.score == 0
+    assert pacman.x_coordinate == 0
+    assert pacman.y_coordinate == 0
+    assert pacman.lives == 3
 
 def test_eat_cheese():
     pacman = Pacman()
-    if pacman.eat_cheese():
-        assert pacman.score == 10
+    pacman.x_coordinate = 5
+    pacman.y_coordinate = 5
+
+    cheese = Cheese(
+        x_coordinate=5,
+        y_coordinate=5
+    )
+
+    result = pacman.eat_cheese(cheese)
+
+    assert result is True
+    assert pacman.score == 10
 
 def test_eat_cheese_unhappy_path():
     pacman = Pacman()
@@ -17,7 +35,10 @@ def test_eat_cheese_unhappy_path():
 
 def test_eat_cherry():
     pacman = Pacman()
-    if pacman.eat_cherry():
+    pacman.x_coordinate = 0
+    pacman.y_coordinate = 0
+    cherry = Cherry(0,0)
+    if pacman.eat_cherry(cherry):
         assert pacman.score == 50
 
 def test_eat_cherry_unhappy_path():
@@ -28,15 +49,26 @@ def test_eat_cherry_unhappy_path():
 
 def test_eat_ghost():
     pacman = Pacman()
-    ghost = Ghost(color="red", starting_position=(0, 0))
-    # Simulate eating a ghost
-    if pacman.eat_ghost() and ghost.edible():
-        assert pacman.score >= 200  # Assuming eating a ghost gives at least 200 points
+    ghost = Ghost(
+        color="red",
+        start_position=(0, 0),
+        x_coordinate=0,
+        y_coordinate=0
+    )
+
+    ghost.edible = True
+
+    result = pacman.eat_ghost(ghost)
+
+    assert result is True
+    assert pacman.score == 200
 
 def test_eat_ghost_unhappy_path():
     pacman = Pacman()
-    ghost = Ghost(color="red", starting_position=(0, 0))
-    if not ghost.edible():
+    pacman.x_coordinate = 0
+    pacman.y_coordinate = 0
+    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    if not ghost.edible:
         with pytest.raises(Exception):
             pacman.eat_ghost()
 def test_add_score():
@@ -64,8 +96,11 @@ def test_lose_life_unhappy_path():
 
 def test_powerup():
     pacman = Pacman()
-    if pacman.powerup():
-        assert pacman.powered_up == True
+    powerup = PowerUp(x_coordinate=0, y_coordinate=0)
+    pacman.x_coordinate = 0
+    pacman.y_coordinate = 0
+    pacman.eat_powerup(powerup)
+    assert pacman.score == 50
 
 def test_powerup_unhappy_path():
     pacman = Pacman()

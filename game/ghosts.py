@@ -13,7 +13,7 @@ class Ghost(Character):
         )
 
         self.color = color
-        self.start_position = start_position
+        self.start_position = (x_coordinate, y_coordinate)
         self.edible = False
         self.edible_timer = 0
 
