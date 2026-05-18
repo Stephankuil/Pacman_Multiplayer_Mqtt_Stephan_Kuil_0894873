@@ -16,6 +16,7 @@ def test_ghosts():
     assert ghost.start_position == (0, 0)
     assert ghost.edible is False
 
+
 def test_color():
     ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
     assert ghost.color == "red"

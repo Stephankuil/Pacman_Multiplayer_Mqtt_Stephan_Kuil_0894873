@@ -6,6 +6,7 @@ class Character(GameObject):
         self.score = score
         self.image = image
 
+
     def move(self, direction, level_map):
         if direction == "LEFT":
             new_x = self.x_coordinate - 1
@@ -31,6 +32,8 @@ class Character(GameObject):
             self.y_coordinate = new_y
 
     def add_score(self, points):
-        self.score += points
+        if points < 0:
+            raise ValueError("Score cannot be negative")
 
+        self.score += points
 
