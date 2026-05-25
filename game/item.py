@@ -14,3 +14,6 @@ class Item(GameObject):
         self.name = name
         self.points = points
         self.consumed = False
+
+    def consume(self):
+        self.consumed = True
