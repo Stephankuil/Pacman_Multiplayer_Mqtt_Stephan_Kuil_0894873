@@ -18,6 +18,7 @@ class Character {
 class Item {
     +int points
     +boolean consumed
+    consume()
 }
 
 namespace Gamelogic {
