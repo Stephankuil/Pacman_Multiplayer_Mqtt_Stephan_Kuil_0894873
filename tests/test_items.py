@@ -13,3 +13,12 @@ def test_consumed_items():
     item.consume()
     assert item.consumed
 
+def test_consumed_item_double_consume():
+    item = Item(name="Power Pellet", points=100)
+    assert not item.consumed
+    item.consume()
+    assert item.consumed
+    # Trying to consume an already consumed item should not change its state
+    item.consume()
+    assert item.consumed
+
