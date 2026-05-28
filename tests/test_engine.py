@@ -1,7 +1,7 @@
 import pytest
 from game.engine import Engine
 from game.pacman import Pacman
-
+from inspiration.levelmap import LevelMap
 def test_engine_running():
     engine = Engine()
     assert engine.running == False

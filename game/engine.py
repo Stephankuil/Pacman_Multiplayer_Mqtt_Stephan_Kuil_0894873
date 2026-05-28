@@ -63,3 +63,8 @@ class Engine():
 
         self.pacman.lives = 3
         self.pacman.score = 0
+
+    def stop(self):
+        self.running = False
+        self.paused = False
+
