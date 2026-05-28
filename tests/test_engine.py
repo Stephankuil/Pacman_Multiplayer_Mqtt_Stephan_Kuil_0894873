@@ -1,35 +1,38 @@
 import pytest
-from inspiration.engine import Engine
-from inspiration.levelmap import Map
-
+from game.engine import Engine
+from game.pacman import Pacman
+from inspiration.levelmap import LevelMap
 def test_engine_running():
     engine = Engine()
     assert engine.running == False
 
 
 def test_engine_level_completion():
+
     engine = Engine()
 
-    engine.cheese.quantity = 0
+    engine.cheese_list = []
 
     engine.if_win()
 
     assert engine.level == 2
 
-
 def test_engine_game_over():
-    engine = Engine()
 
-    engine.character.score = 0
+    engine = Engine()
+    pacman = Pacman()
+
+    engine.pacman.lives = 0
+
     engine.if_game_over()
 
-    assert engine.game_over == True
+    assert engine.game_over is True
 
 def test_engine_game_over_lives_over_zero_bug():
     engine = Engine()
     engine.pacman.lives = 1
 
-    result = engine.check_game_over()
+    result = engine.if_game_over()
 
     assert result is False
 
@@ -42,7 +45,7 @@ def test_engine_number_of_players():
 def test_game_status():
     engine = Engine()
 
-    assert engine.game_status == "Not started"
+    assert engine.game_status() == "Not started"
 
 def test_engine_pauze():
     engine = Engine()
@@ -54,12 +57,17 @@ def test_engine_pauze():
 
 
 def test_engine_resume():
+
     engine = Engine()
-    if not engine.running:
-        engine.resume()
 
-    assert engine.running == True
+    engine.game_over = False
+    engine.running = False
+    engine.paused = True
 
+    engine.resume()
+
+    assert engine.running is True
+    assert engine.paused is False
 def test_engine_resume_cant_resume_if_game_over_bug():
     engine = Engine()
     engine.paused = True
@@ -101,6 +109,7 @@ def test_engine_draw_map(mocker):
     engine.draw_map(fake_map)
 
     assert fake_map.get_tile.called
+
 def test_engine_draw_map_level_2():
     engine = Engine(level=1)
 
