@@ -1,5 +1,6 @@
 from game.cheese import Cheese
 from game.pacman import Pacman
+import pygame
 
 class Engine():
     def __init__(self):
@@ -68,7 +69,20 @@ class Engine():
         self.running = False
         self.paused = False
 
-    def draw_map(self):
-        return f"Drawing map {self.level} with width {self.width} and height {self.height}"
+    import pygame
 
-#hallo
+    def draw(self, screen):
+        tile_size = 30
+
+        for y, row in enumerate(self.map):
+            for x, tile in enumerate(row):
+
+                if tile == '1':
+                    pygame.draw.rect(
+                        screen,
+                        (0, 0, 255),
+                        (x * tile_size,
+                         y * tile_size,
+                         tile_size,
+                         tile_size)
+                    )

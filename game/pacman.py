@@ -2,13 +2,14 @@ from game.character import Character
 from game.cheese import Cheese
 from game.cherry import Cherry
 from game.powerup import PowerUp
+import pygame
 class Pacman(Character):
-    def __init__(self):
+    def __init__(self, x_coordinate=0, y_coordinate=0):
         super().__init__(
             name="Pacman",
             score=0,
-            x_coordinate=0,
-            y_coordinate=0,
+            x_coordinate=x_coordinate,
+            y_coordinate=y_coordinate,
             image=None
         )
 
@@ -41,3 +42,16 @@ class Pacman(Character):
         self.lives -= 1
         if self.lives < 0:
             raise ValueError("Lives cannot be negative")
+
+    def draw(self, screen):
+        tile_size = 30
+
+        pygame.draw.circle(
+            screen,
+            (255, 255, 0),
+            (
+                self.x_coordinate * tile_size + tile_size // 2,
+                self.y_coordinate * tile_size + tile_size // 2
+            ),
+            12
+        )
