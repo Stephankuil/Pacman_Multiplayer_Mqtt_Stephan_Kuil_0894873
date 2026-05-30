@@ -7,33 +7,32 @@ def test_ghosts():
         color="red",
         x_coordinate=0,
         y_coordinate=0,
-        start_position=(0, 0)
+
     )
 
     assert ghost.color == "red"
     assert ghost.x_coordinate == 0
     assert ghost.y_coordinate == 0
-    assert ghost.start_position == (0, 0)
     assert ghost.edible is False
 
 
 def test_color():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     assert ghost.color == "red"
 
 
 def test_edible():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     assert not ghost.edible
 
 def test_make_edible():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     ghost.make_edible(duration=10)
     assert ghost.edible
 
 
 def test_edible_timer():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
 
     ghost.make_edible(duration=10)
 
@@ -45,14 +44,14 @@ def test_edible_timer():
     assert not ghost.edible
 
 def test_make_inedible():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     ghost.make_edible(duration=10)
     assert ghost.edible
     ghost.make_normal()
     assert not ghost.edible
 
 def test_make_inedible_unhappy_path():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     ghost.make_normal()  # Should not raise an error even if already inedible
     assert not ghost.edible
     ghost.make_normal()  # Should still not raise an error
@@ -61,7 +60,6 @@ def test_make_inedible_unhappy_path():
 def test_hit_pacman():
     ghost = Ghost(
         color="red",
-        start_position=(0, 0),
         x_coordinate=0,
         y_coordinate=0
     )
@@ -73,7 +71,7 @@ def test_hit_pacman():
     assert pacman.lives == 2
 
 def test_ghost_eat_pacman():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     pacman = Pacman()
     if ghost.hit_pacman(pacman):
         result = "Pacman eaten"
@@ -95,7 +93,6 @@ def test_wall_check():
 
     ghost = Ghost(
         color="red",
-        start_position=(0, 0),
         x_coordinate=0,
         y_coordinate=0
     )
@@ -106,7 +103,7 @@ def test_wall_check():
 
 
 def test_wall_check_out_of_bounds():
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     game_map = LevelMap(
         [
             "000",
