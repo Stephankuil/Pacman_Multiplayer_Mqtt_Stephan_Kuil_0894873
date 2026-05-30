@@ -1,6 +1,6 @@
 from game.character import Character
 from inspiration.levelmap import LevelMap
-
+import pygame
 class Ghost(Character):
 
     def __init__(self, color, x_coordinate, y_coordinate, image=None):
@@ -71,3 +71,16 @@ class Ghost(Character):
             return False
 
         return True
+
+    def draw(self, screen):
+        tile_size = 30
+
+        pygame.draw.circle(
+            screen,
+            self.color,
+            (
+                self.x_coordinate * tile_size + tile_size // 2,
+                self.y_coordinate * tile_size + tile_size // 2
+            ),
+            12
+        )

@@ -1,5 +1,6 @@
 from game.item import Item
 
+import pygame
 
 class Cherry(Item):
 
@@ -33,5 +34,18 @@ class Cherry(Item):
         self.y_coordinate = new_y_coordinate
 
         self.consumed = False
+
+    def draw(self, screen):
+        tile_size = 30
+
+        pygame.draw.circle(
+            screen,
+            (255, 0, 0),
+            (
+                self.x_coordinate * tile_size + tile_size // 2,
+                self.y_coordinate * tile_size + tile_size // 2
+            ),
+            8
+        )
 
 
