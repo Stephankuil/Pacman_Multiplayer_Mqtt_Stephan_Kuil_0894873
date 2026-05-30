@@ -3,7 +3,7 @@ from inspiration.levelmap import LevelMap
 
 class Ghost(Character):
 
-    def __init__(self, color, x_coordinate, y_coordinate, start_position, image=None):
+    def __init__(self, color, x_coordinate, y_coordinate, image=None):
         super().__init__(
             name="Ghost",
             score=0,
@@ -13,7 +13,6 @@ class Ghost(Character):
         )
 
         self.color = color
-        self.start_position = (x_coordinate, y_coordinate)
         self.edible = False
         self.edible_timer = 0
 
