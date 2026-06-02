@@ -1,5 +1,5 @@
 from game.gameobject import GameObject
-
+import pygame
 
 class Item(GameObject):
 
@@ -17,3 +17,16 @@ class Item(GameObject):
 
     def consume(self):
         self.consumed = True
+
+    def draw_item(self, screen, color):
+        tile_size = 30
+
+        pygame.draw.circle(
+            screen,
+            color,
+            (
+                self.x_coordinate * tile_size + tile_size // 2,
+                self.y_coordinate * tile_size + tile_size // 2
+            ),
+            4
+        )

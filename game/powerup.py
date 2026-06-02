@@ -18,15 +18,4 @@ class PowerUp(Item):
         self.spawn_points = 0
         self.image = None
 
-    def draw(self, screen):
-        tile_size = 30
 
-        pygame.draw.circle(
-            screen,
-            (255, 0, 255),
-            (
-                self.x_coordinate * tile_size + tile_size // 2,
-                self.y_coordinate * tile_size + tile_size // 2
-            ),
-            10
-        )
