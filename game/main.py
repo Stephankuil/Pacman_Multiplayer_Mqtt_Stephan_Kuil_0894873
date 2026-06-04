@@ -83,10 +83,10 @@ class Main():
         self.level_map.draw(self.screen)
 
         for cheese in self.cheese_list:
-            cheese.draw_item(self.screen, (255, 255, 0))
+            cheese.draw(self.screen, (255, 255, 0))
 
         for item in self.items:
-            item.draw_item(self.screen, (255, 0, 255))
+            item.draw(self.screen, (255, 0, 255))
 
         self.pacman.draw(self.screen)
 
