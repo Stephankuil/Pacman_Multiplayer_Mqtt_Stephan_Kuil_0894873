@@ -41,36 +41,37 @@ class Main():
                 if event.type == pygame.QUIT:
                     running = False
 
-            # # toetsenbord input
-            # keys = pygame.key.get_pressed()
-            #
-            # if keys[pygame.K_LEFT]:
-            #     self.pacman.move("LEFT", self.level_map)
-            #
-            # if keys[pygame.K_RIGHT]:
-            #     self.pacman.move("RIGHT", self.level_map)
-            #
-            # if keys[pygame.K_UP]:
-            #     self.pacman.move("UP", self.level_map)
-            #
-            # if keys[pygame.K_DOWN]:
-            #     self.pacman.move("DOWN", self.level_map)
-            #
-            # # game logica
-            # for cheese in self.cheese_list:
-            #     self.pacman.eat_cheese(cheese)
-            #
-            # for item in self.items:
-            #     if isinstance(item, Cherry):
-            #         self.pacman.eat_cherry(item)
-            #
-            #     if isinstance(item, PowerUp):
-            #         self.pacman.eat_powerup(item)
-            #
-            # for ghost in self.ghosts:
-            #     ghost.hit_pacman(self.pacman)
 
-            # tekenen
+
+            # toetsenbord input
+            keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_LEFT]:
+                self.pacman.move("LEFT", self.level_map)
+
+            if keys[pygame.K_RIGHT]:
+                self.pacman.move("RIGHT", self.level_map)
+
+            if keys[pygame.K_UP]:
+                self.pacman.move("UP", self.level_map)
+
+            if keys[pygame.K_DOWN]:
+                self.pacman.move("DOWN", self.level_map)
+
+            # game logica
+            for cheese in self.cheese_list:
+                self.pacman.eat_cheese(cheese)
+
+            for item in self.items:
+                if isinstance(item, Cherry):
+                    self.pacman.eat_cherry(item)
+
+                if isinstance(item, PowerUp):
+                    self.pacman.eat_powerup(item)
+
+            for ghost in self.ghosts:
+                ghost.hit_pacman(self.pacman)
+
             self.draw()
 
             pygame.display.update()
@@ -83,15 +84,19 @@ class Main():
         self.level_map.draw(self.screen)
 
         for cheese in self.cheese_list:
-            cheese.draw(self.screen, (255, 255, 0))
+            cheese.draw(self.screen)
 
-        for item in self.items:
-            item.draw(self.screen, (255, 0, 255))
+        for cherry in self.items:
+            cherry.draw(self.screen, (255, 0, 255))
 
         self.pacman.draw(self.screen)
 
         for ghost in self.ghosts:
             ghost.draw(self.screen)
+
+
+
+
 
 
 if __name__ == "__main__":
