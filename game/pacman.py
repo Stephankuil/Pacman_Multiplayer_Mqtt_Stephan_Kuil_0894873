@@ -15,10 +15,11 @@ class Pacman(Character):
 
         self.lives = 3
 
-
     def eat_cheese(self, cheese):
         if self.x_coordinate == cheese.x_coordinate and self.y_coordinate == cheese.y_coordinate:
-            self.add_score(10)
+            if not cheese.consumed:
+                cheese.consumed = True
+                self.add_score(10)
             return True
         return False
 

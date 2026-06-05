@@ -32,6 +32,8 @@ class Main():
         ]
         self.screen = pygame.display.set_mode((600, 700))
         pygame.display.set_caption("Pacman")
+        self.move_delay = 150  # milliseconden tussen bewegingen
+        self.last_move = 0
 
     def loop(self):
         running = True
@@ -46,17 +48,23 @@ class Main():
             # toetsenbord input
             keys = pygame.key.get_pressed()
 
-            if keys[pygame.K_LEFT]:
-                self.pacman.move("LEFT", self.level_map)
+            current_time = pygame.time.get_ticks()
 
-            if keys[pygame.K_RIGHT]:
-                self.pacman.move("RIGHT", self.level_map)
+            if current_time - self.last_move > self.move_delay:
 
-            if keys[pygame.K_UP]:
-                self.pacman.move("UP", self.level_map)
+                if keys[pygame.K_LEFT]:
+                    self.pacman.move("LEFT", self.level_map)
 
-            if keys[pygame.K_DOWN]:
-                self.pacman.move("DOWN", self.level_map)
+                elif keys[pygame.K_RIGHT]:
+                    self.pacman.move("RIGHT", self.level_map)
+
+                elif keys[pygame.K_UP]:
+                    self.pacman.move("UP", self.level_map)
+
+                elif keys[pygame.K_DOWN]:
+                    self.pacman.move("DOWN", self.level_map)
+
+                self.last_move = current_time
 
             # game logica
             for cheese in self.cheese_list:
@@ -84,16 +92,17 @@ class Main():
         self.level_map.draw(self.screen)
 
         for cheese in self.cheese_list:
-            cheese.draw(self.screen)
+            if not cheese.consumed:
+                cheese.draw(self.screen)
 
-        for cherry in self.items:
-            cherry.draw(self.screen, (255, 0, 255))
+        for item in self.items:
+            if not item.consumed:
+                item.draw(self.screen, (255, 0, 255))
 
         self.pacman.draw(self.screen)
 
         for ghost in self.ghosts:
             ghost.draw(self.screen)
-
 
 
 
