@@ -8,7 +8,9 @@ class Cherry(Item):
             self,
             x_coordinate=0,
             y_coordinate=0,
-            respawn_time=30
+            respawn_time=30,
+            rgb_color =(255, 0, 255)
+
     ):
 
         super().__init__(
@@ -34,6 +36,8 @@ class Cherry(Item):
         self.y_coordinate = new_y_coordinate
 
         self.consumed = False
+
+#
 
 
 

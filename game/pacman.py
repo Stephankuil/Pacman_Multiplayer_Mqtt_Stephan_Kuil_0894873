@@ -15,16 +15,19 @@ class Pacman(Character):
 
         self.lives = 3
 
-
     def eat_cheese(self, cheese):
         if self.x_coordinate == cheese.x_coordinate and self.y_coordinate == cheese.y_coordinate:
-            self.add_score(10)
+            if not cheese.consumed:
+                cheese.consumed = True
+                self.add_score(10)
             return True
         return False
 
     def eat_cherry(self, cherry):
         if self.x_coordinate == cherry.x_coordinate and self.y_coordinate == cherry.y_coordinate:
-            self.add_score(50)
+            if not cherry.consumed:
+                cherry.consumed = True
+                self.add_score(cherry.points)
             return True
         return False
 
@@ -36,12 +39,22 @@ class Pacman(Character):
 
     def eat_powerup(self, powerup):
         if self.x_coordinate == powerup.x_coordinate and self.y_coordinate == powerup.y_coordinate:
-            self.add_score(50)
+            if not powerup.consumed:
+                powerup.consumed = True
+                self.add_score(50)
+            return True
+        return False
 
     def lose_life(self):
         self.lives -= 1
+
+        # Pacman terug naar startpositie
+        self.x_coordinate = 10
+        self.y_coordinate = 15
+
         if self.lives < 0:
             raise ValueError("Lives cannot be negative")
+
 
     def draw(self, screen):
         tile_size = 30

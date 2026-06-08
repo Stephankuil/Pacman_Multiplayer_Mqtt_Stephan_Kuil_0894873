@@ -1,28 +1,37 @@
+import sys
 import pygame
+
 from game.engine import Engine
 from game.level_map import LevelMap
-from game.character import Character
 from game.ghosts import Ghost
 from game.pacman import Pacman
-from game.gameobject import GameObject
 from game.cheese import Cheese
 from game.cherry import Cherry
 from game.powerup import PowerUp
-from game.item import Item
+from game.mqtt_manager import MQTTManager
 
 
-class Main():
+class Main:
     def __init__(self):
+        self.player_id = sys.argv[1] if len(sys.argv) > 1 else "p1"
+        self.is_host = self.player_id == "p1"
 
         self.level_map = LevelMap(LevelMap.MAP1, 19, 21, 1)
-        self.cheese_list = [Cheese(x, y) for x, y in self.level_map.find_cheese_positions()]
+
+        self.cheese_list = [
+            Cheese(x, y)
+            for x, y in self.level_map.find_cheese_positions()
+        ]
+
         self.ghosts = [
             Ghost(color="red", x_coordinate=9, y_coordinate=7),
             Ghost(color="pink", x_coordinate=9, y_coordinate=8),
             Ghost(color="cyan", x_coordinate=9, y_coordinate=9),
             Ghost(color="orange", x_coordinate=9, y_coordinate=10)
         ]
+
         self.pacman = Pacman(x_coordinate=10, y_coordinate=15)
+
         self.items = [
             PowerUp(x_coordinate=1, y_coordinate=2),
             PowerUp(x_coordinate=17, y_coordinate=2),
@@ -30,8 +39,23 @@ class Main():
             PowerUp(x_coordinate=17, y_coordinate=16),
             Cherry(x_coordinate=9, y_coordinate=8)
         ]
+
+        self.other_players = {}
+
+        self.mqtt_manager = MQTTManager(
+            self.player_id,
+            self.pacman,
+            self.other_players,
+            self.is_host
+        )
+
+        self.mqtt_manager.connect()
+
         self.screen = pygame.display.set_mode((600, 700))
         pygame.display.set_caption("Pacman")
+
+        self.move_delay = 150
+        self.last_move = 0
 
     def loop(self):
         running = True
@@ -41,40 +65,49 @@ class Main():
                 if event.type == pygame.QUIT:
                     running = False
 
-            # # toetsenbord input
-            # keys = pygame.key.get_pressed()
-            #
-            # if keys[pygame.K_LEFT]:
-            #     self.pacman.move("LEFT", self.level_map)
-            #
-            # if keys[pygame.K_RIGHT]:
-            #     self.pacman.move("RIGHT", self.level_map)
-            #
-            # if keys[pygame.K_UP]:
-            #     self.pacman.move("UP", self.level_map)
-            #
-            # if keys[pygame.K_DOWN]:
-            #     self.pacman.move("DOWN", self.level_map)
-            #
-            # # game logica
-            # for cheese in self.cheese_list:
-            #     self.pacman.eat_cheese(cheese)
-            #
-            # for item in self.items:
-            #     if isinstance(item, Cherry):
-            #         self.pacman.eat_cherry(item)
-            #
-            #     if isinstance(item, PowerUp):
-            #         self.pacman.eat_powerup(item)
-            #
-            # for ghost in self.ghosts:
-            #     ghost.hit_pacman(self.pacman)
+            keys = pygame.key.get_pressed()
+            current_time = pygame.time.get_ticks()
 
-            # tekenen
+            moved = False
+
+            if current_time - self.last_move > self.move_delay:
+                if keys[pygame.K_LEFT]:
+                    self.pacman.move("LEFT", self.level_map)
+                    moved = True
+
+                elif keys[pygame.K_RIGHT]:
+                    self.pacman.move("RIGHT", self.level_map)
+                    moved = True
+
+                elif keys[pygame.K_UP]:
+                    self.pacman.move("UP", self.level_map)
+                    moved = True
+
+                elif keys[pygame.K_DOWN]:
+                    self.pacman.move("DOWN", self.level_map)
+                    moved = True
+
+                if moved:
+                    self.mqtt_manager.publish_move()
+                    self.last_move = current_time
+
+            for cheese in self.cheese_list:
+                self.pacman.eat_cheese(cheese)
+
+            for item in self.items:
+                if isinstance(item, Cherry):
+                    self.pacman.eat_cherry(item)
+
+                if isinstance(item, PowerUp):
+                    self.pacman.eat_powerup(item)
+
+            for ghost in self.ghosts:
+                ghost.hit_pacman(self.pacman)
+
             self.draw()
-
             pygame.display.update()
 
+        self.mqtt_manager.disconnect()
         pygame.quit()
 
     def draw(self):
@@ -83,10 +116,23 @@ class Main():
         self.level_map.draw(self.screen)
 
         for cheese in self.cheese_list:
-            cheese.draw_item(self.screen, (255, 255, 0))
+            if not cheese.consumed:
+                cheese.draw(self.screen)
 
         for item in self.items:
-            item.draw_item(self.screen, (255, 0, 255))
+            if not item.consumed:
+                item.draw(self.screen, (255, 0, 255))
+
+        for pid, other in self.other_players.items():
+            pygame.draw.circle(
+                self.screen,
+                (0, 0, 255),
+                (
+                    other["x"] * 30 + 15,
+                    other["y"] * 30 + 15
+                ),
+                12
+            )
 
         self.pacman.draw(self.screen)
 

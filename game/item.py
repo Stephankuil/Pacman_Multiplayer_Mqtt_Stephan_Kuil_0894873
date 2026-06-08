@@ -18,7 +18,7 @@ class Item(GameObject):
     def consume(self):
         self.consumed = True
 
-    def draw_item(self, screen, color):
+    def draw(self, screen, color):
         tile_size = 30
 
         pygame.draw.circle(
