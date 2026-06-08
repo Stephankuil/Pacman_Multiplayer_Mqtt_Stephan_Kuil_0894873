@@ -1,5 +1,6 @@
 from game.character import Character
 from inspiration.levelmap import LevelMap
+import random
 import pygame
 class Ghost(Character):
 
@@ -84,3 +85,16 @@ class Ghost(Character):
             ),
             12
         )
+
+    def move_random(self, level_map):
+        directions = ["LEFT", "RIGHT", "UP", "DOWN"]
+        random.shuffle(directions)
+
+        for direction in directions:
+            old_x = self.x_coordinate
+            old_y = self.y_coordinate
+
+            self.move(direction, level_map)
+
+            if self.x_coordinate != old_x or self.y_coordinate != old_y:
+                break

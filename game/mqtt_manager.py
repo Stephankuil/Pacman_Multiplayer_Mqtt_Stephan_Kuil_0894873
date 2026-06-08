@@ -15,7 +15,7 @@ TOPIC = "pacman/inspiration"
 
 
 class MQTTManager:
-    def __init__(self, player_id, pacman, players, is_host):
+    def __init__(self, player_id, pacman, players, ghosts, is_host):
         self.player_id = player_id
         self.pacman = pacman
         self.players = players
@@ -23,6 +23,7 @@ class MQTTManager:
         self.item_eaten_message = None
         self.cheese_eaten_message = None
         self.is_host = is_host
+        self.ghosts = ghosts
 
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.client.username_pw_set(USERNAME, PASSWORD)
@@ -52,6 +53,14 @@ class MQTTManager:
             self.cheese_eaten_message = data
             return
 
+        if data["type"] == "ghost_positions":
+            for ghost_data in data["ghosts"]:
+                for ghost in self.ghosts:
+                    if ghost.color == ghost_data["color"]:
+                        ghost.x_coordinate = ghost_data["x"]
+                        ghost.y_coordinate = ghost_data["y"]
+            return
+
         pid = data["player_id"]
 
         if pid == self.player_id:
@@ -66,7 +75,6 @@ class MQTTManager:
 
         if data.get("type") == "join":
             self.publish_move()
-
     def publish_join(self):
         message = {
             "type": "join",
@@ -136,6 +144,20 @@ class MQTTManager:
 
         self.client.publish(TOPIC, json.dumps(message))
 
+    def publish_ghost_positions(self, ghosts):
+        message = {
+            "type": "ghost_positions",
+            "ghosts": [
+                {
+                    "color": ghost.color,
+                    "x": ghost.x_coordinate,
+                    "y": ghost.y_coordinate
+                }
+                for ghost in ghosts
+            ]
+        }
+
+        self.client.publish(TOPIC, json.dumps(message))
     def disconnect(self):
         self.client.loop_stop()
         self.client.disconnect()

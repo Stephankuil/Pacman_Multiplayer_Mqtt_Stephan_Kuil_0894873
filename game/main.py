@@ -46,7 +46,9 @@ class Main:
             self.player_id,
             self.pacman,
             self.other_players,
+            self.ghosts,
             self.is_host
+
         )
 
         self.mqtt_manager.connect()
@@ -56,6 +58,10 @@ class Main:
 
         self.move_delay = 150
         self.last_move = 0
+
+        self.last_ghost_move = 0
+        self.ghost_move_delay = 500
+
 
     def loop(self):
         running = True
@@ -100,6 +106,14 @@ class Main:
 
                 if isinstance(item, PowerUp):
                     self.pacman.eat_powerup(item)
+
+            if self.is_host:
+                if current_time - self.last_ghost_move > self.ghost_move_delay:
+                    for ghost in self.ghosts:
+                        ghost.move_random(self.level_map)
+
+                    self.mqtt_manager.publish_ghost_positions(self.ghosts)
+                    self.last_ghost_move = current_time
 
             for ghost in self.ghosts:
                 ghost.hit_pacman(self.pacman)
