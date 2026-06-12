@@ -34,12 +34,6 @@ class Ghost(Character):
         self.edible = False
         self.edible_timer = 0
 
-    def hit_pacman(self, pacman):
-        if self.edible:
-            return
-
-        if self.x_coordinate == pacman.x_coordinate and self.y_coordinate == pacman.y_coordinate:
-            pacman.lose_life()
 
     def turn_blue(self):
         if self.edible:
