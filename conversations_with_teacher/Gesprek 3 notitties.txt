@@ -1,0 +1,34 @@
+Hoe zou ik eraan kunnen sleutel om het mezelf makkelijker te maken.
+
+sequence diagram tovoegen handshake, gedecodeerde tekst bij sequence
+
+
+
+bouw een flowchart, beschrijf de renderloop. 
+
+Hint: Event based manipuleren(Alleen als je beweegt). Event based mqtt(alleen een bericht als een ander beweegt), tegelijk 60x tekenen van de laatste plek waarvan je weet waar het staat.
+
+Hoe krijg je de informatie binnen van de broker?
+
+Via get_message.. zet dit in flowchart.
+
+
+
+to do:
+
+Class diagram blob image
+
+flowchart bouwen schets
+
+Test schrijven alsof de code er al is (Wat verwacht je van de code).
+
+
+Schrijf het liefst alle tests eerst.
+
+Pull request --> Per test_file/class diagram blokje een pull request.
+
+Waar kijk ik naar?
+- het werk wat je doet proberen ordenen. 
+- Codeconfenties --> boek? 
+- doet het wat je wilt dat het doet.
+
