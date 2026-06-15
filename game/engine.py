@@ -86,3 +86,8 @@ class Engine():
                          tile_size,
                          tile_size)
                     )
+
+    def check_level_completion(self):
+        if len(self.cheese_list) == 0:
+            self.level += 1
+            self.cheese_list = [Cheese(0, 0)]
