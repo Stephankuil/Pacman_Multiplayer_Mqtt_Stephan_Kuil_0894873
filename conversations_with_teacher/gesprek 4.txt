@@ -1,0 +1,18 @@
+Bij ghost test duration testen met wait functie en en duration variabele
+If ghost is edible test if ghost becomes blue
+
+
+TO-DO
+
+Alles van chatgpt is niet mijn code dus zet dat in map inspiratie.
+Voeg de prompt toe als een comment bovenin
+Ik heb de diagrammen gemaakt, daarna de testen gemaakt, Daarna alleen code maken wat de tests laten slagen. Die testen mogen uitgebreid worden.
+Je wilt met de testen laten zien dat de implementatie klopt.
+
+mapje game wordt map inspiratie
+
+Voor alles wat je een test hebt, ga je code schrijven.
+
+HET DOEL: Dit wil ik, Doet het wat ik wilde?
+
+Maak een feature branche. Doe dit per class!!!

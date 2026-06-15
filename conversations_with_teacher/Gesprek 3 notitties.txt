@@ -1,4 +1,4 @@
-Hoe zou ik eraan kunnen sleutel om het mezelf makkelijker te maken.
+Hoe zou ik eraan kunnen sleutelen om het mezelf makkelijker te maken.
 
 sequence diagram tovoegen handshake, gedecodeerde tekst bij sequence
 

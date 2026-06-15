@@ -1,0 +1,10 @@
+beschrijf dat je de solid principes in de readme
+
+probeer 4 solid principes goed toe te passen.
+
+documentatie over diagrammen. 
+
+1. render een statisch beeld
+2. Doe dit statische beeld bij het process.
+3. Maak een linkje hoe je een pacman map maakt via die website.
+

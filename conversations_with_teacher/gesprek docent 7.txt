@@ -1,0 +1,17 @@
+maak voor de loop. 
+
+
+zorg dat pacman de items kan eten.
+Zorg dat mqtt werkt.
+Pas zo nodig classdiagram en tests aan.
+
+Maak een perma link in de readme waar je aantoont dat je solid principes gebruikt
+
+interface segregation principle 2 classes moeten niet van elkaar afhankelijk zijn 
+
+waarom had ik het wel?
+En waarom nu niet meer en waarom heb ik de functionaliteit aangepast en het probleem opgelost.
+
+
+deadline 20 juni
+

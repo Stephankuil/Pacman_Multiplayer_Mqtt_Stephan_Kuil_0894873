@@ -1,0 +1,16 @@
+
+
+1 out of bounds tests
+1 wall check test
+
+bij ghosts
+
+
+Maak het midden van het level x=0 en y=0
+
+
+schrijf een markdown file
+
+schrijf een startende SOLID documentatie
+
+(Wanneer pas ik dit toe?)
