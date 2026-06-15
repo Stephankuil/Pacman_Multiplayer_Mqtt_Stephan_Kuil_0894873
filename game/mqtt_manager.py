@@ -99,32 +99,38 @@ class MQTTManager:
 
         self.client.publish(TOPIC, json.dumps(message))
 
-    def publish_world_state(self, ghosts, cherry, powerup, cheese):
+    def publish_world_state(self, ghosts, items, cheese_list):
         message = {
             "type": "world_state",
             "ghosts": [
                 {
+                    "color": ghost.color,
                     "x": ghost.x_coordinate,
                     "y": ghost.y_coordinate,
                     "edible": ghost.edible
                 }
                 for ghost in ghosts
             ],
-            "cherry": {
-                "x": cherry.x_coordinate,
-                "y": cherry.y_coordinate,
-                "consumed": cherry.consumed
-            },
-            "powerup": {
-                "x": powerup.x_coordinate,
-                "y": powerup.y_coordinate,
-                "consumed": powerup.consumed
-            },
-            "cheese_positions": list(cheese.positions)
+            "items": [
+                {
+                    "type": item.__class__.__name__,
+                    "x": item.x_coordinate,
+                    "y": item.y_coordinate,
+                    "consumed": item.consumed
+                }
+                for item in items
+            ],
+            "cheese": [
+                {
+                    "x": cheese.x_coordinate,
+                    "y": cheese.y_coordinate,
+                    "consumed": cheese.consumed
+                }
+                for cheese in cheese_list
+            ]
         }
 
         self.client.publish(TOPIC, json.dumps(message))
-
     def publish_item_eaten(self, item_type):
         message = {
             "type": "item_eaten",

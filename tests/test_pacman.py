@@ -51,7 +51,6 @@ def test_eat_ghost():
     pacman = Pacman()
     ghost = Ghost(
         color="red",
-        start_position=(0, 0),
         x_coordinate=0,
         y_coordinate=0
     )
@@ -67,7 +66,7 @@ def test_eat_ghost_unhappy_path():
     pacman = Pacman()
     pacman.x_coordinate = 0
     pacman.y_coordinate = 0
-    ghost = Ghost(color="red", start_position=(0, 0), x_coordinate=0, y_coordinate=0)
+    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
     if not ghost.edible:
         with pytest.raises(Exception):
             pacman.eat_ghost()

@@ -1,7 +1,6 @@
 # SOLID Principles Used in the Pacman Game Directory
 
 **Commit:** f15243a
-
 Only the files inside the `game` directory were reviewed. The examples below demonstrate where SOLID principles are applied within the project and explain why they qualify as examples of these design principles.
 
 The **Single Responsibility Principle (SRP)** can be seen in the `MQTTManager` class. This class is responsible only for MQTT communication, including broker configuration, credentials, callbacks, publishing, and receiving messages. By keeping networking logic separate from game logic, classes such as `Pacman`, `Ghost`, and `Main` do not need to know how MQTT communication works. This gives the `MQTTManager` one clear responsibility and improves maintainability.

@@ -2,6 +2,7 @@ from game.character import Character
 from game.cheese import Cheese
 from game.cherry import Cherry
 from game.powerup import PowerUp
+from game.ghosts import Ghost
 import pygame
 class Pacman(Character):
     def __init__(self, x_coordinate=0, y_coordinate=0):
@@ -55,6 +56,12 @@ class Pacman(Character):
         if self.lives < 0:
             raise ValueError("Lives cannot be negative")
 
+    def hit_by_ghost(self, ghost):
+        if ghost.edible:
+            return
+
+        if self.x_coordinate == ghost.x_coordinate and self.y_coordinate == ghost.y_coordinate:
+            self.lose_life()
 
     def draw(self, screen):
         tile_size = 30
