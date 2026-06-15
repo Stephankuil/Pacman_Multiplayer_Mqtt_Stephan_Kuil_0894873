@@ -1,8 +1,8 @@
 import pytest
 from game.cheese import Cheese
 def test_cheese_color():
-    chees = Cheese(rgb_color="yellow")
-    assert chees.rgb_color == "yellow"
+    chees = Cheese()
+    assert chees.rgb_color == (255, 255, 0)
 
 def test_cheese_how_many_left():
 

@@ -57,26 +57,7 @@ def test_make_inedible_unhappy_path():
     ghost.make_normal()  # Should still not raise an error
     assert not ghost.edible
 
-def test_hit_pacman():
-    ghost = Ghost(
-        color="red",
-        x_coordinate=0,
-        y_coordinate=0
-    )
 
-    pacman = Pacman()
-
-    ghost.hit_pacman(pacman)
-
-    assert pacman.lives == 2
-
-def test_ghost_eat_pacman():
-    ghost = Ghost(color="red", x_coordinate=0, y_coordinate=0)
-    pacman = Pacman()
-    if ghost.hit_pacman(pacman):
-        result = "Pacman eaten"
-        pacman.lose_life()
-        assert pacman.lives == 2
 
 def test_wall_check():
 

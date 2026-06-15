@@ -1,7 +1,10 @@
 import pytest
 from game.engine import Engine
 from game.pacman import Pacman
-from inspiration.levelmap import LevelMap
+from game.level_map import LevelMap
+from unittest.mock import Mock, patch
+
+
 def test_engine_running():
     engine = Engine()
     assert engine.running == False
@@ -102,24 +105,34 @@ def test_engine_restart_resets_game_over():
     engine.restart()
 
     assert engine.game_over is False
-def test_engine_draw_map(mocker):
-    engine = Engine()
-    fake_map = mocker.Mock()
 
-    engine.draw_map(fake_map)
+def test_map_draw():
+    with patch("pygame.draw.rect") as draw_rect:
 
-    assert fake_map.get_tile.called
+        level_map = LevelMap(
+            LevelMap.MAP1,
+            10,
+            10,
+            1
+        )
 
+        mock_screen = Mock()
+
+        level_map.draw(mock_screen)
+
+        assert draw_rect.called
 def test_engine_draw_map_level_2():
-    engine = Engine(level=1)
+    from game.main import Main
+
+    engine = Engine()
 
     # alle kaas op
-    engine.cheese.quantity = 0
+    engine.cheese_list = []
 
     engine.check_level_completion()
 
     assert engine.level == 2
-    assert engine.cheese.quantity > 0
+    assert len(engine.cheese_list) > 0
 
 def test_engine_stop():
     engine = Engine()
