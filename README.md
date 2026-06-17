@@ -54,16 +54,39 @@ I dont really have DIP in this project.
 
 **De Solid Principes in mijn pacman_mqtt project**
 
-In mijn project heb ik 4 solid principes gebruikt. Dat zijn SRP, OCP, LSP en ISP. 
-Dit doe ik om de goede overzichtelijker, beter onderhoudbaar en makkelijk uitbreidbaar te maken.
-Ik heb in dit project in de eerste 4 weken met behulp van AI snel een project gemaakt zonder rekening te houden met SOLID principes. En daarna in het tweede deel van het project nogmaals het project gemaakt en wel rekening gehouden met Test Driven Development en SOLID. 
-Wat je ziet als je het project maakt zonder SOLID principes heb je eigenlijk geen clean code. Dat betekent dat je ongeveer alles in je code moet aanpassen als je 1 verandering doet. Dit is erg inefficient. Dus eerst zou ik in de cheese, powerup, cherry class ook draw methode hebben(**OSP**). Dit is dubbele code dus heb ik een item class gemaakt waar de draw methode instaat die gebruikt kan worden door cheese, cherry en powerup. Zo zorg je ervoor dat je als de draw methode moet worden aangepast je dat slechts 1x in item hoeft te doen. Ook had ik in de ghost class dat ghosts pacman opeten. Maar dit is niet SRP omdat je dan ook de pacman class nodig hebt. Dus heb ik die methode verplaatst naar pacman class. Dat is de hit_by_ghost methode.(**SRP**). Ook voor de items en de subclasse cherry, cheese en powerup. hiermee hoeft De code hier niet te weten of het item een Cherry of een PowerUp is. Beide gedragen zich als een Item.(**LSP**). Als ik later nog een subclasse bedenk kan die ook gewoon met die code gebruikt worden.
+Hieronder staat jouw tekst iets netter geschreven, maar nog steeds in een eenvoudige stijl alsof jij hem zelf hebt geschreven.
 
+---
+
+# De SOLID-principes in mijn Pacman MQTT project
+
+In mijn project heb ik 4 SOLID-principes gebruikt: **SRP, OCP, LSP en ISP**.
+
+Ik heb deze principes toegepast om de code overzichtelijker, beter onderhoudbaar en makkelijker uitbreidbaar te maken.
+
+In de eerste weken van dit project heb ik met behulp van AI snel een werkende versie gemaakt zonder rekening te houden met SOLID-principes. In het tweede deel van het project heb ik het project opnieuw opgebouwd waarbij ik wel rekening hield met **Test Driven Development (TDD)** en **SOLID**.
+
+Wat je merkt als je een project maakt zonder SOLID-principes, is dat de code snel rommelig wordt. Vaak moet je dan op meerdere plekken wijzigingen maken als je één onderdeel wilt aanpassen. Dat maakt het onderhoud van de code lastig en inefficiënt.
+
+Een voorbeeld hiervan was de `draw()` methode. Eerst had ik in de `Cheese`, `Cherry` en `PowerUp` class allemaal een eigen `draw()` methode (**OCP**). Dit was dubbele code. Daarom heb ik een algemene `Item` class gemaakt waarin de `draw()` methode staat. De subclasses kunnen deze methode gebruiken via inheritance. Hierdoor hoef ik de tekenfunctionaliteit nog maar op één plek aan te passen als ik iets wil veranderen.
+
+Ook had ik eerst een methode in de `Ghost` class waarmee een ghost Pacman kon raken. Dit vond ik achteraf geen goede toepassing van **SRP**, omdat de `Ghost` class dan ook kennis moest hebben van de interne werking van Pacman. Daarom heb ik deze verantwoordelijkheid verplaatst naar de `Pacman` class in de methode `hit_by_ghost()`. Hierdoor heeft iedere class een duidelijkere verantwoordelijkheid.
+
+Voor de `Item` class en de subclasses `Cherry`, `Cheese` en `PowerUp` heb ik gebruikgemaakt van **LSP**. De code hoeft namelijk niet te weten of een object een `Cherry` of een `PowerUp` is. Beide gedragen zich als een `Item`.
+
+```python
 for item in self.items:
     item.draw(self.screen, (255, 0, 255))
+```
 
+Hierdoor kan ik later eenvoudig nieuwe item-types toevoegen zonder deze code aan te passen. Als ik bijvoorbeeld een nieuw bonus-item maak dat van `Item` erft, kan deze direct in dezelfde lijst gebruikt worden.
 
-Ook heb ik bij het kijken naar de item class en de cherry, cheese en powerup. gezorgt dat item class geen methodes heeft die door sommige subclasses niet gebruikt worden. Hierdoor blijven de classes simpel. Dus nu hebben classes alleen functies die logisch of nodig zijn voor die class. (**ISP**)
+Daarnaast heb ik gekeken naar de opbouw van de `Item` class en de subclasses. Ik heb ervoor gezorgd dat de `Item` class alleen methodes bevat die daadwerkelijk relevant zijn voor items (**ISP**). Hierdoor krijgen classes zoals `Cherry`, `Cheese` en `PowerUp` geen onnodige functies die ze toch niet gebruiken.
+
+Dit zorgt ervoor dat de classes simpel blijven en alleen functies bevatten die logisch zijn voor die specifieke class.
+
+Door deze SOLID-principes toe te passen is mijn code overzichtelijker geworden, makkelijker uit te breiden en eenvoudiger te onderhouden. Ook is het makkelijker om nieuwe functionaliteit toe te voegen zonder bestaande code op veel plaatsen te moeten aanpassen.
+
 
 
 
