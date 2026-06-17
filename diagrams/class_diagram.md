@@ -5,20 +5,24 @@ direction TB
 class GameObject {
     +int x
     +int y
+    +image
     draw()
 }
 
 class Character {
     +string name
     +int score
+    +image
     move()
-    wall_check()
+    add_score()
 }
 
 class Item {
     +int points
+    +name
     +boolean consumed
     consume()
+    draw()
 }
 
 namespace Gamelogic {
@@ -43,15 +47,19 @@ namespace Gamelogic {
         is_wall()
         get_tile()
         find_cheese_positions()
+        get_teleport_positions()
+        get_other_teleport()
     }
 }
 
 namespace Characters {
     class Pacman {
         +int lives
-        +blob image
         eat_cheese()
+        eat_cherry()
         eat_powerup()
+        hit_by_ghost()
+        draw()
         add_score()
         eat_cherry()
         lose_life()
@@ -61,12 +69,18 @@ namespace Characters {
     class Ghosts {
         blob image
         +rgb_color color
-        +int start_position
         +boolean edible
+        +edible_timer
         make_edible()
+        update_edible_timer()
+        turn_blue()
+        draw()
         make_normal()
         hit_pacman()
-        eat_by_pacman()
+        eaten_by_pacman()
+        wall_check()
+        move_random()
+        
     }
 }
 
@@ -74,6 +88,7 @@ namespace Items {
     class Cherry {
         +blob image
         +int bonus_points
+        +respawn_time
         respawn()
     }
 
@@ -87,6 +102,7 @@ namespace Items {
         +blob image
         +int spawn_points
         +int amount
+        +boolean active
     }
 }
 
