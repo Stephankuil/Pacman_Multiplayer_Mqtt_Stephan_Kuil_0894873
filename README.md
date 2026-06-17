@@ -1,44 +1,72 @@
-# SOLID Principles Used in the Pacman Game Directory
-
-**Commit:** f15243a
-Only the files inside the `game` directory were reviewed. The examples below demonstrate where SOLID principles are applied within the project and explain why they qualify as examples of these design principles.
-
-The **Single Responsibility Principle (SRP)** can be seen in the `MQTTManager` class. This class is responsible only for MQTT communication, including broker configuration, credentials, callbacks, publishing, and receiving messages. By keeping networking logic separate from game logic, classes such as `Pacman`, `Ghost`, and `Main` do not need to know how MQTT communication works. This gives the `MQTTManager` one clear responsibility and improves maintainability.
-
-Another example of SRP is found in the `Ghost` class. The `move_random()` method contains all logic related to ghost movement. The `Main` class only instructs the ghosts to move and does not contain the actual movement algorithm. This separation ensures that ghost behaviour remains the responsibility of the `Ghost` class while the game loop remains the responsibility of `Main`.
-
-The **Open/Closed Principle (OCP)** is demonstrated through the `Item` inheritance structure. The `Item` class provides shared functionality such as storing a name, points value, consumed state, and drawing behaviour. New item types can be added by creating subclasses without changing the existing `Item` implementation. This allows the system to be extended while keeping existing code stable and unchanged.
-
-The **Liskov Substitution Principle (LSP)** is visible in classes such as `PowerUp` and `Cheese`. Both inherit from `Item` and can be used anywhere an `Item` is expected. For example, `PowerUp` extends the base item functionality while still behaving like a normal item. Likewise, `Cheese` reuses the shared drawing behaviour through `super().draw()` while adding its own specific properties. Because both classes can replace an `Item` without breaking functionality, they satisfy the Liskov Substitution Principle.
-
-The **Interface Segregation Principle (ISP)** can be observed in the design of the `Item` class. Items only contain behaviour that is relevant to items, such as drawing and being consumed. They are not forced to implement movement, attacking, player input handling, or other unrelated functionality. This keeps classes focused on the behaviour they actually require and avoids unnecessary dependencies.
-
-The **Dependency Inversion Principle (DIP)** is partially applied in the interaction between `Main` and `MQTTManager`. Instead of creating all required game objects internally, the `MQTTManager` receives dependencies such as `Pacman`, `Ghost` objects, and other player information through its constructor. This approach reduces coupling because the manager works with objects supplied from outside rather than constructing them itself.
-
-A second example of DIP can be seen where the ghost collection is injected into the `MQTTManager`. By receiving the list of ghosts through the constructor, the manager becomes more flexible and easier to test. Although the implementation still depends on concrete classes rather than abstractions or interfaces, it represents a step toward dependency inversion.
-
-Finally, SRP is also visible in the separation between the game loop and network communication. The `Main` class controls the timing of the game loop and decides when ghost positions should be updated. The actual MQTT message creation and publishing are handled by methods such as `publish_ghost_positions()` within the `MQTTManager`. This ensures that network-specific responsibilities remain isolated from gameplay logic.
-
-Overall, the strongest SOLID examples in this project are the use of the Single Responsibility Principle through dedicated classes such as `MQTTManager`, `Ghost`, and `Main`, and the use of the Open/Closed and Liskov Substitution Principles through the inheritance structure of `Item`, `Cheese`, and `PowerUp`. Dependency Inversion is present to a limited extent through constructor injection, although it could be strengthened further by introducing abstractions or interfaces.
+S — Single Responsibility Principle (SRP)
+"Elke klasse heeft één duidelijke verantwoordelijkheid. De Pacman-klasse beheert het gedrag van Pacman, de Ghost-klasse beheert de spoken en de MQTTManager-klasse verzorgt alleen de netwerkcommunicatie via MQTT. Hierdoor heeft iedere klasse slechts één reden om gewijzigd te worden."
 
 
-[SRP - MQTT Communication](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/mqtt_manager.py#L17-L29)
+**Pacman class is only responsible for pacman behaviour**
+https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/0008c2675740d53c91c3e295fce5bb6580854315/game/pacman.py#L7
 
-[SRP - Ghost Movement](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/ghosts.py#L89-L100)
 
-[OCP - Item Base Class](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/item.py#L5-L31)
 
-[LSP - PowerUp](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/powerup.py#L5-L19)
+O — Open/Closed Principle (OCP) 
 
-[LSP - Cheese](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/cheese.py#L5-L34)
+Open voor uitbreiding, gesloten voor aanpassing. 
 
-[ISP - Item Interface](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/item.py#L21-L31)
+Je moet nieuwe functionaliteit kunnen toevoegen zonder bestaande code te wijzigen. 
 
-[DIP - Dependency Injection in Main](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/main.py#L43-L52)
+**from gameobject to cherry. You can create more features without changing the code. **
+https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/0008c2675740d53c91c3e295fce5bb6580854315/game/gameobject.py#L3
+https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/0008c2675740d53c91c3e295fce5bb6580854315/game/item.py#L4
+https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/0008c2675740d53c91c3e295fce5bb6580854315/game/cherry.py#L5
 
-[DIP - Constructor Injection in MQTTManager](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/mqtt_manager.py#L18-L26)
 
-[SRP - Main Controls Loop](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/main.py#L110-L116)
+L — Liskov Substitution Principle (LSP) 
 
-[SRP - Publish Ghost Positions](https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/f15243a2b61f6376a2ac601cdc2d306dba452598/game/mqtt_manager.py#L147-L160)
+Een subklasse moet altijd de basisklasse kunnen vervangen. 
+
+Als iets een Item is, moet je zonder problemen een Cherry of PowerUp kunnen gebruiken. 
+
+https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/0008c2675740d53c91c3e295fce5bb6580854315/game/main.py#L209
+
+
+
+ 
+
+I — Interface Segregation Principle (ISP) 
+
+Maak liever meerdere kleine interfaces dan één grote. 
+De item classe heeft alleen item functies en geen onnodige methodes. Hiermee krijgen cherry en cheese enzo geen onnodige functies.
+https://github.com/Stephankuil/Pacman_Multiplayer_Mqtt_Stephan_Kuil_0894873/blob/0008c2675740d53c91c3e295fce5bb6580854315/game/item.py#L4
+
+
+
+ 
+
+D — Dependency Inversion Principle (DIP) 
+
+Programmeer tegen abstracties, niet tegen concrete implementaties. 
+
+I dont really have DIP in this project.
+
+
+* Schrijf de solid principes die je hebt toegepast in je eigen woorden.
+* Schrijf waarom je dingen hebt verandert naar een solid principe. Dus waarom heb ik het verbeterd en waarom werkt het goed.
+
+
+**De Solid Principes in mijn pacman_mqtt project**
+
+In mijn project heb ik 4 solid principes gebruikt. Dat zijn SRP, OCP, LSP en ISP. 
+Dit doe ik om de goede overzichtelijker, beter onderhoudbaar en makkelijk uitbreidbaar te maken.
+Ik heb in dit project in de eerste 4 weken met behulp van AI snel een project gemaakt zonder rekening te houden met SOLID principes. En daarna in het tweede deel van het project nogmaals het project gemaakt en wel rekening gehouden met Test Driven Development en SOLID. 
+Wat je ziet als je het project maakt zonder SOLID principes heb je eigenlijk geen clean code. Dat betekent dat je ongeveer alles in je code moet aanpassen als je 1 verandering doet. Dit is erg inefficient. Dus eerst zou ik in de cheese, powerup, cherry class ook draw methode hebben(**OSP**). Dit is dubbele code dus heb ik een item class gemaakt waar de draw methode instaat die gebruikt kan worden door cheese, cherry en powerup. Zo zorg je ervoor dat je als de draw methode moet worden aangepast je dat slechts 1x in item hoeft te doen. Ook had ik in de ghost class dat ghosts pacman opeten. Maar dit is niet SRP omdat je dan ook de pacman class nodig hebt. Dus heb ik die methode verplaatst naar pacman class. Dat is de hit_by_ghost methode.(**SRP**). Ook voor de items en de subclasse cherry, cheese en powerup. hiermee hoeft De code hier niet te weten of het item een Cherry of een PowerUp is. Beide gedragen zich als een Item.(**LSP**). Als ik later nog een subclasse bedenk kan die ook gewoon met die code gebruikt worden.
+
+for item in self.items:
+    item.draw(self.screen, (255, 0, 255))
+
+
+Ook heb ik bij het kijken naar de item class en de cherry, cheese en powerup. gezorgt dat item class geen methodes heeft die door sommige subclasses niet gebruikt worden. Hierdoor blijven de classes simpel. Dus nu hebben classes alleen functies die logisch of nodig zijn voor die class. (**ISP**)
+
+
+
+
+
 
